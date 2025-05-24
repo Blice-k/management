@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Welcome to Library Management System</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            text-align: center;
+            background-image: url("@{/templates/library.png}"); /* 修改为正确路径 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .content {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 50px;
+        }
+        h1 { margin-top: 0; }
+        ul { list-style-type: none; padding: 0; display: inline-block; text-align: left; }
+        li { margin: 15px 0; }
+        button {
+            background-color: #ffd600;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover { transform: scale(1.05); }
+        a { text-decoration: none; color: black; font-weight: bold; }
+    </style>
+</head>
+<body>
+<!-- 测试图片路径 -->
+<img src="@{/templates/library.png}" alt="Test Image" style="display:block;margin:20px auto;" />
+
+<div class="content">
+    <h1>Welcome to students borrowing system</h1>
+    <ul style="display: flex; justify-content: space-around; padding: 0; list-style-type: none;">
+        <li><button><a href="/books">Select book list</a></button></li>
+        <li><button><a href="/students">Select student list</a></button></li>
+        <li><button><a href="/book_loans">View book loans</a></button></li>
+    </ul>
+</div>
+</body>
+</html>

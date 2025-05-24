@@ -1,0 +1,50 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Student</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        form { max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; }
+        input[type="text"] { width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        input[type="submit"] { background-color: #4CAF50; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
+        input[type="submit"]:hover { background-color: #45a049; }
+        .nav { text-align: center; margin: 20px; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+<div class="nav">
+    <button style="background-color: #ffd600;"><a href="/">Home</a></button> |
+    <button style="background-color: #ffd600;"><a href="/books">Book list</a></button> |
+    <button style="background-color: #ffd600;"><a href="/students">Student list</a></button> |
+    <button style="background-color: #ffd600;"><a href="/book_loans">Book loans</a></button>
+</div>
+<h1 style="text-align: center;">Add New Student</h1>
+
+<div class="error" th:if="${error}" th:text="${error}"></div>
+
+<form action="#" th:action="@{/students/add}" th:object="${student}" method="post">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" th:field="*{firstName}" required>
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" th:field="*{lastName}" required>
+
+    <label for="studentNumber">Student Number:</label>
+    <input type="text" id="studentNumber" th:field="*{studentNumber}" required>
+
+    <label for="groupName">Group Name:</label>
+    <input type="text" id="groupName" th:field="*{groupName}" required>
+
+    <label for="email">Email:</label>
+    <input type="text" id="email" th:field="*{email}" required>
+
+    <label for="college">College:</label>
+    <input type="text" id="college" th:field="*{college}" required>
+
+    <input type="submit" value="Add Student">
+</form>
+</body>
+</html>

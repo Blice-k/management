@@ -1,0 +1,54 @@
+<!-- templates/book_loans.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Book Loans</title>
+    <meta charset="UTF-8">
+    <style>
+        table { border-collapse: collapse; width: 80%; margin: 20px auto; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        h1 { text-align: center; }
+        .nav { text-align: center; margin: 20px; }
+        .sort-btn { margin: 10px; padding: 5px 10px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .sort-btn:hover { background-color: #45a049; }
+        .add-btn { margin: 10px; padding: 5px 10px; background-color: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .add-btn:hover { background-color: #0b7dda; }
+    </style>
+</head>
+<body>
+<div class="nav">
+    <button style="background-color: #ffd600;"><a href="/">Home</a></button> |
+    <button style="background-color: #ffd600;"><a href="/books">Book list</a></button> |
+    <button style="background-color: #ffd600;"><a href="/students">Student list</a></button> |
+    <button style="background-color: #ffd600;"><a href="/book_loans">Book loans</a></button>
+</div>
+<h1>Book Loans</h1>
+
+<div style="text-align: center;">
+    <button class="sort-btn" onclick="window.location.href='/book_loans?sort=date'">Sort by Date</button>
+    <button class="sort-btn" onclick="window.location.href='/book_loans'">Reset Sort</button>
+    <button class="add-btn" onclick="window.location.href='/book_loans/add'">Add New Loan</button>
+</div>
+
+<table>
+    <tr>
+        <th>Loan ID</th>
+        <th>Book ID</th>
+        <th>Student ID</th>
+        <th>Loan Date</th> <!-- 确保表头包含Loan Date -->
+        <th>Return Date</th>
+    </tr>
+    <tr th:each="loan : ${loans}">
+        <td th:text="${loan.loanId}"></td>
+        <td th:text="${loan.bookId}"></td>
+        <td th:text="${loan.studentId}"></td>
+        <td th:text="${#temporals.format(loan.loanDate, 'yyyy-MM-dd')}"></td> <!-- 显示借阅日期 -->
+        <td th:text="${loan.returnDate != null ? #temporals.format(loan.returnDate, 'yyyy-MM-dd') : 'Not returned yet'}">
+            Not returned yet
+        </td>
+    </tr>
+</table>
+</body>
+</html>

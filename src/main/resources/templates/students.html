@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student List</title>
+    <meta charset="UTF-8">
+    <style>
+        table { border-collapse: collapse; width: 80%; margin: 20px auto; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        h1 { text-align: center; }
+        .nav { text-align: center; margin: 20px; }
+        .sort-btn { margin: 10px; padding: 5px 10px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .sort-btn:hover { background-color: #45a049; }
+        .add-btn { margin: 10px; padding: 5px 10px; background-color: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .add-btn:hover { background-color: #0b7dda; }
+    </style>
+</head>
+<body>
+<div class="nav">
+    <button style="background-color: #ffd600;"><a href="/">Home</a></button> |
+    <button style="background-color: #ffd600;"><a href="/books">Book list</a></button> |
+    <button style="background-color: #ffd600;"><a href="/students">Student list</a></button> |
+    <button style="background-color: #ffd600;"><a href="/book_loans">Book loans</a></button>
+</div>
+<h1>Student List</h1>
+
+<div style="text-align: center;">
+    <button class="sort-btn" onclick="window.location.href='/students?sort=alpha'">Sort by Alphabetical Order</button>
+    <button class="sort-btn" onclick="window.location.href='/students'">Reset Sort</button>
+    <button class="add-btn" onclick="window.location.href='/students/add'">Add New Student</button>
+</div>
+
+<table>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Student Number</th>
+        <th>Group Name</th>
+        <th>Email</th>
+        <th>College</th>
+    </tr>
+    <tr th:each="student : ${students}">
+        <td th:text="${student.firstName}"></td>
+        <td th:text="${student.lastName}"></td>
+        <td th:text="${student.studentNumber}"></td> <!-- 修正为studentNumber -->
+        <td th:text="${student.groupName}"></td>
+        <td th:text="${student.email}"></td>
+        <td th:text="${student.college}"></td> <!-- 修正为college -->
+    </tr>
+</table>
+</body>
+</html>
