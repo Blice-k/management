@@ -1,52 +1,193 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <title>Welcome to Library Management System</title>
     <meta charset="UTF-8">
     <style>
         body {
             text-align: center;
-            background-image: url("@{/templates/library.png}"); /* 修改为正确路径 */
+            background-image: url("https://picsum.photos/id/287/1920/1080");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             height: 100vh;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
+
+        /* 天气组件样式 */
+        .weather-widget {
+            background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .weather-icon {
+            width: 45px;
+            height: 45px;
+        }
+
+        .weather-info {
+            text-align: left;
+        }
+
+        .weather-location {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .weather-temp {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .weather-desc {
+            text-transform: capitalize;
+            font-size: 0.9rem;
+        }
+
         .content {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            display: inline-block;
-            margin-top: 50px;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 40px 60px;
+            border-radius: 15px;
+            color: white;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin: 15px 0;
         }
-        h1 { margin-top: 0; }
-        ul { list-style-type: none; padding: 0; display: inline-block; text-align: left; }
-        li { margin: 15px 0; }
+
+        h1 {
+            margin-top: 0;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        li {
+            margin: 0;
+        }
+
         button {
             background-color: #ffd600;
-            padding: 10px 20px;
+            padding: 15px 30px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 100%;
         }
-        button:hover { transform: scale(1.05); }
-        a { text-decoration: none; color: black; font-weight: bold; }
+
+        button:hover {
+            background-color: #ffea00;
+            transform: translateY(-2px);
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .user-info {
+            text-align: right;
+            margin-bottom: 20px;
+            color: #ffd600;
+        }
     </style>
 </head>
 <body>
-<!-- 测试图片路径 -->
-<img src="@{/templates/library.png}" alt="Test Image" style="display:block;margin:20px auto;" />
+<!-- 天气组件 - 放在首页顶部 -->
+<div id="weather-widget" class="weather-widget"></div>
 
 <div class="content">
+    <!-- 显示当前登录用户和退出按钮 -->
+    <div sec:authorize="isAuthenticated()" class="user-info">
+        <span sec:authentication="name">User</span> |
+        <a href="/logout" style="color: white; text-decoration: underline;">Logout</a>
+    </div>
+
     <h1>Welcome to students borrowing system</h1>
-    <ul style="display: flex; justify-content: space-around; padding: 0; list-style-type: none;">
+    <ul>
         <li><button><a href="/books">Select book list</a></button></li>
         <li><button><a href="/students">Select student list</a></button></li>
         <li><button><a href="/book_loans">View book loans</a></button></li>
     </ul>
 </div>
+
+<script>
+    // 天气组件逻辑 - 无API版本
+    const weatherWidget = document.getElementById('weather-widget');
+    const city = 'New York'; // 显示的城市名称
+
+    // 天气状态选项
+    const weatherOptions = [
+        { icon: '01d', description: 'clear sky', temp: 25, bgColor: '#4facfe' },
+        { icon: '02d', description: 'few clouds', temp: 22, bgColor: '#64b5f6' },
+        { icon: '03d', description: 'scattered clouds', temp: 20, bgColor: '#90caf9' },
+        { icon: '04d', description: 'broken clouds', temp: 18, bgColor: '#bbdefb' },
+        { icon: '09d', description: 'shower rain', temp: 16, bgColor: '#42a5f5' },
+        { icon: '10d', description: 'rain', temp: 15, bgColor: '#2196f3' },
+        { icon: '11d', description: 'thunderstorm', temp: 14, bgColor: '#1976d2' },
+        { icon: '13d', description: 'snow', temp: 5, bgColor: '#90caf9' },
+        { icon: '50d', description: 'mist', temp: 12, bgColor: '#b0bec5' }
+    ];
+
+    // 获取随机天气
+    function getRandomWeather() {
+        const randomIndex = Math.floor(Math.random() * weatherOptions.length);
+        return weatherOptions[randomIndex];
+    }
+
+    // 获取天气图标URL
+    function getWeatherIcon(iconCode) {
+        return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    }
+
+    // 加载模拟天气数据
+    function loadMockWeather() {
+        const weather = getRandomWeather();
+
+        // 更新天气组件背景
+        weatherWidget.style.background = `linear-gradient(to right, ${weather.bgColor} 0%, #00f2fe 100%)`;
+
+        weatherWidget.innerHTML = `
+            <img src="${getWeatherIcon(weather.icon)}" alt="${weather.description}" class="weather-icon">
+            <div class="weather-info">
+                <div class="weather-location">${city}</div>
+                <div class="weather-temp">${weather.temp}°C</div>
+                <div class="weather-desc">${weather.description}</div>
+            </div>
+        `;
+    }
+
+    // 初始化加载天气
+    loadMockWeather();
+
+    // 每10分钟刷新一次模拟天气
+    setInterval(loadMockWeather, 10 * 60 * 1000);
+</script>
 </body>
 </html>
